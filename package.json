@@ -17,7 +17,7 @@
   "commands": [
     {
       "command": "clean-unused-assets.scanAndClean",
-      "title": "Scan and Delete Unused Assets"
+      "title": "Delete Unused Assets"
     }
   ]
 },
