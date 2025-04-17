@@ -1,57 +1,39 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
-
-const ASSET_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.css', '.js'];
+import { getAllFiles } from './utils';
+import { findReferencedAssets } from './scanReferences';
+import { detectUnusedAssets } from './detectUnused';
+import { moveToUnusedFolder } from './moveUnused';
+import { ASSET_EXTENSIONS, SOURCE_FILE_EXTENSIONS } from './constants';
 
 export function activate(context: vscode.ExtensionContext) {
-	const disposable = vscode.commands.registerCommand('unused-assets-cleaner.scanAndClean', async () => {
-		const workspaceFolders = vscode.workspace.workspaceFolders;
-		if (!workspaceFolders) {
-			vscode.window.showErrorMessage('Please open a folder first.');
+	const disposable = vscode.commands.registerCommand('clean-unused-assets.scanAndMove', async () => {
+		const folder = vscode.workspace.workspaceFolders?.[0];
+		if (!folder) {
+			vscode.window.showErrorMessage('Open a folder first.');
 			return;
 		}
 
-		const rootPath = workspaceFolders[0].uri.fsPath;
-		const allFiles = await getAllFiles(rootPath);
-		const assetFiles = allFiles.filter(f => ASSET_EXTENSIONS.includes(path.extname(f).toLowerCase()));
-		const codeFiles = allFiles.filter(f => /\.(html|ts|js|jsx|tsx|css)$/.test(f));
+		const rootPath = folder.uri.fsPath;
 
-		// Read all code files and combine contents
-		const usedAssets: Set<string> = new Set();
-		for (const file of codeFiles) {
-			const content = fs.readFileSync(file, 'utf-8');
-			for (const asset of assetFiles) {
-				const relativeAsset = path.relative(rootPath, asset).replace(/\\/g, '/');
-				if (content.includes(relativeAsset)) {
-					usedAssets.add(asset);
-				}
-			}
-		}
+		const sourceFiles = getAllFiles(rootPath, SOURCE_FILE_EXTENSIONS);
+		const assetFiles = getAllFiles(rootPath, ASSET_EXTENSIONS);
 
-		// Find unused files
-		const unusedAssets = assetFiles.filter(file => !usedAssets.has(file));
+		const referenced = findReferencedAssets(sourceFiles);
+		const unused = detectUnusedAssets(assetFiles, referenced, rootPath);
 
-		if (unusedAssets.length === 0) {
-			vscode.window.showInformationMessage('No unused assets found!');
+		if (unused.length === 0) {
+			vscode.window.showInformationMessage('No unused assets found 🎉');
 			return;
 		}
 
-		// Show QuickPick to delete
-		const selected = await vscode.window.showQuickPick(
-			unusedAssets.map(f => path.relative(rootPath, f)),
-			{
-				canPickMany: true,
-				placeHolder: 'Select unused assets to delete',
-			}
-		);
+		const confirm = await vscode.window.showWarningMessage(
+			`${unused.length} unused files found. Move to unused_files folder?`,
+			'Yes', 'No'
+		); 
 
-		if (selected && selected.length > 0) {
-			for (const relPath of selected) {
-				const fullPath = path.join(rootPath, relPath);
-				fs.unlinkSync(fullPath);
-			}
-			vscode.window.showInformationMessage(`${selected.length} unused assets deleted.`);
+		if (confirm === 'Yes') {
+			moveToUnusedFolder(unused, rootPath);
+			vscode.window.showInformationMessage(`Moved ${unused.length} files to unused_files/`);
 		}
 	});
 
@@ -59,21 +41,3 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {}
-
-async function getAllFiles(dir: string): Promise<string[]> {
-	let results: string[] = [];
-	const list = fs.readdirSync(dir);
-
-	for (const file of list) {
-		const filePath = path.join(dir, file);
-		const stat = fs.statSync(filePath);
-
-		if (stat && stat.isDirectory()) {
-			results = results.concat(await getAllFiles(filePath));
-		} else {
-			results.push(filePath);
-		}
-	}
-
-	return results;
-}
