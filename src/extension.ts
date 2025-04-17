@@ -5,7 +5,7 @@ import * as path from 'path';
 const ASSET_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.css', '.js'];
 
 export function activate(context: vscode.ExtensionContext) {
-	const disposable = vscode.commands.registerCommand('clean-unused-assets.scanAndClean', async () => {
+	const disposable = vscode.commands.registerCommand('unused-assets-cleaner.scanAndClean', async () => {
 		const workspaceFolders = vscode.workspace.workspaceFolders;
 		if (!workspaceFolders) {
 			vscode.window.showErrorMessage('Please open a folder first.');
