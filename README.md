@@ -1,3 +1,76 @@
+# 🧹 VSCode Extension: Unused Asset Finder
+
+This Visual Studio Code extension scans your project for unused assets such as `.css`, `.js`, image files, and more. It helps you keep your codebase clean by identifying and moving unused files to a separate folder.
+
+---
+
+## 💡 What This Extension Does
+
+- 🔍 Scans `.html`, `.php`, `.js`, and `.css` files to find asset references
+- 🧼 Detects unused files like:
+  - Styles & scripts: `.css`, `.js`
+  - Images: `.png`, `.jpg`, `.jpeg`, `.gif`, `.svg`, `.webp`
+  - Videos (optional): `.mp4`, `.webm`
+- 📂 Moves unused files into a `unused_files/` folder (instead of deleting them)
+- 🗂️ Recursively works across nested directories
+
+---
+
+## ✅ Technologies Used
+
+### 🟨 1. Language: TypeScript
+
+- A superset of JavaScript that provides type safety
+- Helps catch bugs early and improves maintainability
+- All core logic (`extension.ts`, `utils.ts`, etc.) is written in TypeScript
+
+### 🟦 2. Environment: Node.js
+
+- Runs in Node.js within VSCode
+- Uses built-in `fs` and `path` modules for file and directory operations
+
+### 🧱 3. Platform: Visual Studio Code Extension API
+
+- Utilizes the `vscode` module to:
+  - Access the open workspace
+  - Display messages to users
+  - Register and execute custom commands
+
+### ⚙️ 4. Build Tool: esbuild
+
+- Compiles TypeScript into JavaScript
+- A fast and modern alternative to Webpack or Rollup
+
+### 📦 5. Package Manager: npm
+
+- Manages dependencies such as `typescript`, `esbuild`, and `eslint`
+- Provides scripts like `npm run compile` for building the extension
+
+### 📁 6. File System Utilities
+
+- Uses Node's `fs` and `path` modules to:
+  - Recursively scan directories
+  - Move unused files to a dedicated folder
+
+### 📜 7. Configuration Files
+
+- `package.json` — Metadata, commands, and dependency declarations
+- `tsconfig.json` — TypeScript compiler configuration
+- `esbuild.js` — Build configuration for `esbuild`
+
+---
+
+## 🚀 Getting Started
+
+1. Clone the repo and open it in VSCode.
+2. Run `npm install` to install dependencies.
+3. Use `npm run compile` to build the extension.
+4. Press `F5` to launch the extension in a new Extension Development Host window.
+
+---
+
+## 📂 Example Folder Structure
+
 # clean-unused-assets README
 
 This is the README for your extension "clean-unused-assets". After writing up a brief description, we recommend including the following sections.
