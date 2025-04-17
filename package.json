@@ -1,7 +1,7 @@
 {
   "name": "unused-assets-cleaner",
   "displayName": "Unused Assets Cleaner",
-  "description": "Visual Studio Code extension to find and delete unused image, CSS, and JS files in your project.",
+  "description": "Say goodbye to unused styles, scripts, and media files. This extension helps you clean up and streamline your project folders effortlessly.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.99.0"
