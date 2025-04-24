@@ -3,7 +3,18 @@
   "displayName": "Unused Assets Cleaner",
   "description": "Say goodbye to unused styles, scripts, and media files. This extension helps you clean up and streamline your project folders effortlessly.",
   "version": "0.0.1",
-  "publisher": "Govind-N",
+  "license": "MIT",
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/govindongit/clean-unused-assets.git"
+},
+"bugs": {
+  "url": "https://github.com/govindongit/clean-unused-assets/issues"
+},
+"homepage": "https://github.com/govindongit/clean-unused-assets#readme"
+,
+ "publisher": "GovindN"
+ ,
   "engines": {
     "vscode": "^1.99.0"
   },
