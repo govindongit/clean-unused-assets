@@ -1,14 +1,18 @@
-.vscode/**
-.vscode-test/**
-out/**
-node_modules/**
-src/**
-.gitignore
-.yarnrc
-esbuild.js
-vsc-extension-quickstart.md
-**/tsconfig.json
-**/eslint.config.mjs
-**/*.map
+# Exclude source code and configs
 **/*.ts
-**/.vscode-test.*
+**/*.map
+src/
+.vscode/
+tests/
+*.lock
+esbuild.js
+eslint.config.mjs
+.vscode-test.mjs
+vsc-extension-quickstart.md
+.gitignore
+
+# Explicitly include needed files
+!README.md
+!CHANGELOG.md
+!LICENSE.txt
+!dist/

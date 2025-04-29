@@ -1,9 +1,5 @@
-# Change Log
+# Changelog
 
-All notable changes to the "clean-unused-assets" extension will be documented in this file.
+## 0.0.1
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+- Initial release of Unused Assets Cleaner.
